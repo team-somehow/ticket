@@ -1,3 +1,4 @@
+import EventCard from "../../components/EventCard/EventCard";
 import useEvents from "../../hooks/get/events/useEvents";
 
 const Home = () => {
@@ -23,7 +24,7 @@ const Home = () => {
           Events
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-8">
-          {/* {events.map((event, index) => (
+          {events.map((event, index) => (
             <EventCard
               key={event.id}
               id={event.id}
@@ -32,10 +33,9 @@ const Home = () => {
               description={event.description}
               image={event.image}
               ticketPrice={event.ticketPrice}
+              myEvent={false}
             />
-          ))} */}
-
-          {JSON.stringify(events)}
+          ))}
         </div>
       </section>
     </>
