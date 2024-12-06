@@ -1,5 +1,7 @@
 import { Account, CallData, Contract, RpcProvider, stark } from "starknet";
+
 import * as dotenv from "dotenv";
+
 import { getCompiledCode } from "./utils";
 dotenv.config();
 
@@ -20,14 +22,12 @@ async function main() {
   let sierraCode, casmCode;
 
   try {
-    ({ sierraCode, casmCode } = await getCompiledCode(
-      "counter_counter_contract"
-    ));
+    ({ sierraCode, casmCode } = await getCompiledCode("counter_MyNft"));
   } catch (error: any) {
     console.log("Failed to read contract files");
     process.exit(1);
   }
-  console.log("Declare & deploy contract. \n")
+  console.log("Declare & deploy contract. \n");
 
   const myCallData = new CallData(sierraCode.abi);
   const constructor = myCallData.compile("constructor", {
