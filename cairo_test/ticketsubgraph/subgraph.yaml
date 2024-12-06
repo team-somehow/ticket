@@ -1,0 +1,59 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: TicketProtocol
+    network: base-sepolia
+    source:
+      address: "0x99C8CA6842C20F5428c8C17e6c79634e8dA539D8"
+      abi: TicketProtocol
+      startBlock: 18878428
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - BatchMetadataUpdate
+        - FanScoreSet
+        - MetadataUpdate
+        - OwnershipTransferred
+        - RefundProcessed
+        - StakeReceived
+        - TicketMinted
+        - TicketUsed
+        - Transfer
+        - UserQualified
+      abis:
+        - name: TicketProtocol
+          file: ./abis/TicketProtocol.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: BatchMetadataUpdate(uint256,uint256)
+          handler: handleBatchMetadataUpdate
+        - event: FanScoreSet(indexed address,uint256)
+          handler: handleFanScoreSet
+        - event: MetadataUpdate(uint256)
+          handler: handleMetadataUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RefundProcessed(indexed address,uint256)
+          handler: handleRefundProcessed
+        - event: StakeReceived(indexed address,uint256)
+          handler: handleStakeReceived
+        - event: TicketMinted(indexed address,indexed uint256)
+          handler: handleTicketMinted
+        - event: TicketUsed(indexed uint256,indexed address)
+          handler: handleTicketUsed
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: UserQualified(indexed address)
+          handler: handleUserQualified
+      file: ./src/ticket-protocol.ts
