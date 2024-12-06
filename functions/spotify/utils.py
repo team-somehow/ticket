@@ -6,9 +6,9 @@ def calculate_fan_score_algorithm(user_data):
         'top_artist_rank': 0.25,
         'top_tracks': 0.15,
         'follows_artist': 0.20,
-        'songs_in_playlists': 0.15,
-        'overlapping_tracks': 0.15,
-        'similar_genres': 0.10
+        'songs_in_playlists': 0.05,
+        'overlapping_tracks': 0.20,
+        'similar_genres': 0.15
     }
 
     # Top Artist Rank Score
