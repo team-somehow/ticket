@@ -1,55 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-const events2 = [
-  {
-    name: "Fan Fest 2023",
-    location: "Mumbai, India",
-    description:
-      "Join us for an exciting fan experience with music, games, and surprises!",
-    image: "https://via.placeholder.com/300x200",
-    ticketPrice: "500",
-  },
-  {
-    name: "Comic Con 2023",
-    location: "Bangalore, India",
-    description:
-      "Celebrate pop culture with comics, cosplay, and your favorite characters!",
-    image: "https://via.placeholder.com/300x200",
-    ticketPrice: "1000",
-  },
-  {
-    name: "Music Fiesta",
-    location: "Delhi, India",
-    description:
-      "Enjoy live performances by top artists in an electrifying atmosphere!",
-    image: "https://via.placeholder.com/300x200",
-    ticketPrice: "750",
-  },
-  {
-    name: "Music Fiesta",
-    location: "Delhi, India",
-    description:
-      "Enjoy live performances by top artists in an electrifying atmosphere!",
-    image: "https://via.placeholder.com/300x200",
-    ticketPrice: "750",
-  },
-];
+import useEvents from "../../hooks/get/events/useEvents";
 
 const Home = () => {
-  const [events, setEvents] = useState<any[]>([]);
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setEvents(events2);
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-        setEvents(events2);
-      }
-    };
-    fetchEvents();
-  }, []);
+  const { events, loading, error } = useEvents();
 
   return (
     <>
