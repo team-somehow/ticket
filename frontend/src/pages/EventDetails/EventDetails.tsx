@@ -69,6 +69,7 @@ const EventDetails = (props: Props) => {
       eventDetails.artist
     );
     if (result.success) {
+        console.log(result);
       // setUserStatus("applied");
     }
   };
