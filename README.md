@@ -52,7 +52,7 @@ Top fans receive ticket confirmations and unique non-resalable NFT tickets, ensu
 
 
 ---
-Our team is composed of highly passionate developers, data scientists, and blockchain enthusiasts committed to building innovative solutions for decentralized voting systems. We bring expertise from various domains including machine learning, full-stack development, cryptography, and blockchain technologies.
+Our team is composed of highly passionate developers, data scientists, and blockchain enthusiasts committed to building innovative solutions for decentralized systems. We bring expertise from various domains including machine learning, full-stack development, cryptography, and blockchain technologies.
 
 ## Team Members:-
 
