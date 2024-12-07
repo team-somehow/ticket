@@ -10,6 +10,7 @@ import useUserStatus from "../../hooks/get/events/useUserStatus";
 import useApplyForEvent from "../../hooks/write/events/useApplyForEvent";
 import { useQuery } from "@apollo/client";
 import { stakesReceivedsQuery } from "../../queries";
+import TicketProtocolImplementation from "../../artifacts/TicketProtocol.json";
 
 type Props = {};
 
@@ -60,7 +61,17 @@ const EventDetails = (props: Props) => {
       alert("Please connect to Spotify first!");
       return;
     }
-    if (!eventDetails || !spotifyUserId) return;
+    if (!eventDetails || !spotifyUserId || !eventDetails.contractAddress)
+      return;
+    console.log("Staking started...");
+
+    writeContract({
+      abi: TicketProtocolImplementation.abi,
+      functionName: "stakeAndApply",
+      address: eventDetails.contractAddress as `0x${string}`,
+      account: address,
+      value: stakeAmount as bigint,
+    });
 
     const result = await applyForEvent(
       eventId!,
@@ -69,7 +80,7 @@ const EventDetails = (props: Props) => {
       eventDetails.artist
     );
     if (result.success) {
-        console.log(result);
+      console.log(result);
       // setUserStatus("applied");
     }
   };

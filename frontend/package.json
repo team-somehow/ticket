@@ -19,6 +19,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.2",
+    "starknet": "^6.20.3",
+    "starknetkit": "^2.6.1",
     "tailwind-merge": "^2.5.5",
     "viem": "latest",
     "wagmi": "latest"
