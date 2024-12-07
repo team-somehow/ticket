@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { doc, updateDoc } from "firebase/firestore";
+
 import { db } from "../../../lib/firebase.config";
 
 interface BuyTicketParams {
@@ -35,4 +37,4 @@ const useBuyTicket = () => {
   return { buyTicket, loading, error };
 };
 
-export default useBuyTicket; 
+export default useBuyTicket;
