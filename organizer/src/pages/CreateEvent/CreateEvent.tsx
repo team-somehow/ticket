@@ -10,22 +10,23 @@ import useUserAccount from "../../hooks/account/useUserAccount";
 export default function CreateEvent() {
   const { address } = useUserAccount();
   const [formData, setFormData] = useState({
-    name: "",
-    symbol: "",
-    ticketPrice: "",
-    maxResalePrice: "",
-    royaltyReceiver: "",
-    royaltyFeeNumerator: "",
-    baseTokenURI: "",
-    minFanScore: "",
-    totalTickets: "",
+    name: "Cold Play Tour",
+    symbol: "CPT",
+    ticketPrice: "1000000000000000",
+    maxResalePrice: "10000000000000000",
+    royaltyReceiver: "0x0Dd7D7Ad21d15A999dcc7218E7Df3F25700e696f",
+    royaltyFeeNumerator: "500",
+    baseTokenURI: "https://example.com/metadata/",
+    minFanScore: "50",
+    totalTickets: "5",
     // stakeAmount: "",
-    city: "",
-    description: "",
-    ticketsToSell: "",
-    date: "",
-    artist: "",
-    image: "",
+    city: "New Delhi",
+    description: "Coldplay are a British rock band formed in London in 1997. ",
+    ticketsToSell: "5",
+    date: "2024-12-28T21:30",
+    artist: "Coldplay",
+    image:
+      "https://images.hdqwalls.com/download/coldplay-band-wallpaper-3840x2160.jpg",
   });
   const [loading, setLoading] = useState(false);
 

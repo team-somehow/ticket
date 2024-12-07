@@ -1,16 +1,17 @@
 {
-  "name": "organizer",
+  "name": "frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5177",
+    "dev": "vite --port 5178",
     "build": "vite build",
     "lint": "biome check .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@apollo/client": "^3.12.2",
+    "@coinbase/onchainkit": "^0.35.8",
     "@tanstack/react-query": "5.45.1",
     "axios": "^1.7.9",
     "canvas-confetti": "^1.9.3",
