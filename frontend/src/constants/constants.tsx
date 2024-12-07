@@ -2,3 +2,5 @@
 export const contractAddress = "0x99C8CA6842C20F5428c8C17e6c79634e8dA539D8";
 export const firebaseFunctionBaseUrl =
   "https://us-central1-personal-projects-e8a07.cloudfunctions.net";
+// export const firebaseFunctionBaseUrl =
+//   "http://127.0.0.1:5001/personal-projects-e8a07/us-central1";
