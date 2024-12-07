@@ -88,81 +88,114 @@ const EventDetails = (props: Props) => {
 
   if (loadingEventDetails)
     return (
-      <div className="text-2xl font-heading text-text dark:text-darkText text-center py-12">
-        Loading...
+      <div className="min-h-screen bg-neo-bg p-4">
+        <div className="bg-neo-white border-neo border-neo-black p-6 rounded-lg shadow-neo animate-pulse">
+          <p className="font-neo-display text-xl text-neo-black uppercase">
+            Loading Event Details...
+          </p>
+        </div>
       </div>
     );
 
   if (eventError)
     return (
-      <div className="text-2xl font-heading text-text dark:text-darkText text-center py-12">
-        Error: {eventError}
+      <div className="min-h-screen bg-neo-bg p-4">
+        <div className="bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo">
+          <p className="font-neo-display text-xl text-neo-black uppercase">
+            {eventError}
+          </p>
+        </div>
       </div>
     );
 
   return (
     <>
-      <div className="flex flex-col md:flex-row w-full min-h-screen bg-bg dark:bg-darkBg p-6">
-        {/* Left Section */}
-        <div className="w-full lg:w-7/10 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base p-6 shadow-light dark:shadow-dark">
-          {eventDetails && (
-            <div>
-              <img
-                src={eventDetails.image}
-                alt={eventDetails.name}
-                className="w-full h-60 object-cover rounded-base mb-4 border-2 border-border dark:border-darkBorder"
-              />
-              <h2 className="text-4xl font-heading text-text dark:text-darkText mb-4">
-                {eventDetails.name}
-              </h2>
-              <p className="text-lg mb-2 text-text dark:text-darkText">
-                <strong>Location:</strong> {eventDetails.location}
-              </p>
-              <p className="text-lg mb-2 text-text dark:text-darkText">
-                <strong>Description:</strong> {eventDetails.description}
-              </p>
-              <p className="text-lg text-text dark:text-darkText">
-                <strong>Date:</strong> {eventDetails.date}
-              </p>
-            </div>
-          )}
-        </div>
+      <div className="min-h-screen bg-neo-bg p-4 sm:p-6 md:p-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Section - Event Details */}
+          <div className="lg:col-span-2 bg-neo-white border-neo border-neo-black rounded-lg p-6 shadow-neo">
+            {eventDetails && (
+              <div>
+                <div className="aspect-[16/9] mb-6 rounded-lg border-neo border-neo-black overflow-hidden relative">
+                  <div className="absolute inset-0 bg-neo-primary/30 blur-xl scale-95"></div>
+                  <img
+                    src={eventDetails.image}
+                    alt={eventDetails.name}
+                    className="w-full h-full object-cover relative z-10"
+                  />
+                </div>
 
-        {/* Right Section */}
-        <div className="w-full lg:w-3/10 bg-bg dark:bg-darkBg border-2 border-border dark:border-darkBorder rounded-base p-6 mt-6 md:mt-0 md:ml-6 shadow-light dark:shadow-dark">
-          {userStatus === "applied" && (
-            <p className="text-xl font-heading text-text dark:text-darkText text-center">
-              Please wait for results
-            </p>
-          )}
+                <h2 className="text-3xl sm:text-4xl font-neo-display text-neo-black uppercase mb-6 tracking-tight">
+                  {eventDetails.name}
+                </h2>
 
-          {userStatus === "not applied" && (
-            <>
-              <h3 className="text-3xl font-heading text-text dark:text-darkText mb-4">
-                Book Tickets
-              </h3>
+                <div className="space-y-4 font-neo">
+                  <p className="flex items-center gap-2 text-neo-black">
+                    <span className="uppercase font-bold">📍 Location:</span>
+                    {eventDetails.location}
+                  </p>
 
-              {!spotifyConnected && eventId && (
-                <ConnectToSpotify eventId={eventId} />
-              )}
+                  <p className="text-neo-black">
+                    <span className="uppercase font-bold">Description:</span>
+                    <br />
+                    {eventDetails.description}
+                  </p>
 
-              <button
-                className={cn(
-                  "w-full px-4 py-2 font-heading text-text dark:text-darkText rounded-base border-2 border-border dark:border-darkBorder shadow-light dark:shadow-dark transition-all",
-                  spotifyConnected
-                    ? "bg-mainAccent hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none"
-                    : "bg-secondaryBlack cursor-not-allowed"
+                  <p className="flex items-center gap-2 text-neo-black">
+                    <span className="uppercase font-bold">📅 Date:</span>
+                    {eventDetails.date}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right Section - Booking */}
+          <div className="bg-neo-white border-neo border-neo-black rounded-lg p-6 shadow-neo">
+            {userStatus === "applied" && (
+              <div className="text-center">
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-neo-accent/30 blur-xl scale-95"></div>
+                  <p className="relative z-10 text-xl font-neo-display text-neo-black uppercase bg-neo-white border-neo border-neo-black p-4 rounded-lg shadow-neo">
+                    Please wait for results
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {userStatus === "not applied" && (
+              <>
+                <h3 className="text-2xl font-neo-display text-neo-black uppercase mb-6 tracking-tight">
+                  Book Tickets
+                </h3>
+
+                {!spotifyConnected && eventId && (
+                  <ConnectToSpotify eventId={eventId} />
                 )}
-                onClick={handleStake}
-                disabled={!spotifyConnected || applying}
-              >
-                Book Ticket
-              </button>
-              {applyError && (
-                <p className="text-red-500 text-center mt-2">{applyError}</p>
-              )}
-            </>
-          )}
+
+                <button
+                  className={cn(
+                    "w-full px-6 py-3 text-base font-neo text-neo-black border-neo border-neo-black rounded-lg shadow-neo uppercase tracking-wider transition-all hover:-translate-y-1 hover:translate-x-1 hover:shadow-none",
+                    spotifyConnected
+                      ? "bg-neo-accent"
+                      : "bg-neo-white cursor-not-allowed opacity-50"
+                  )}
+                  onClick={handleStake}
+                  disabled={!spotifyConnected || applying}
+                >
+                  {applying ? "Processing..." : "Book Ticket"}
+                </button>
+
+                {applyError && (
+                  <div className="mt-4 p-3 bg-red-100 border-neo border-neo-black rounded-lg">
+                    <p className="text-red-600 text-center font-neo">
+                      {applyError}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 

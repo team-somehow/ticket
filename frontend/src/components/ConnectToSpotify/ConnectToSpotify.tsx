@@ -1,4 +1,5 @@
 import { firebaseFunctionBaseUrl } from "../../constants/constants";
+import { cn } from "../../lib/utils";
 
 type Props = {
   eventId: string;
@@ -9,8 +10,6 @@ const ConnectToSpotify = ({ eventId }: Props) => {
     try {
       // Store the redirect URL in localStorage
       localStorage.setItem("redirectUrl", `/events/${eventId}`);
-
-      //   return
 
       // Hardcoded Firebase Emulator URL for testing
       const firebaseUrl = firebaseFunctionBaseUrl;
@@ -27,7 +26,10 @@ const ConnectToSpotify = ({ eventId }: Props) => {
   return (
     <button
       onClick={handleSpotifyLogin}
-      className="w-full px-4 py-2 mb-4 font-heading text-text dark:text-darkText rounded-base border-2 border-border dark:border-darkBorder shadow-light dark:shadow-dark hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all bg-mainAccent"
+      className={cn(
+        "w-full px-6 py-3 text-base font-neo text-neo-black border-neo border-neo-black rounded-lg shadow-neo uppercase tracking-wider transition-all hover:-translate-y-1 hover:translate-x-1 hover:shadow-none mb-4",
+        "bg-[#1DB954]" // Spotify brand color
+      )}
     >
       Login with Spotify
     </button>
