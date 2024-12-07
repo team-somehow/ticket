@@ -74,3 +74,5 @@ node_modules/
 personal-projects-e8a07-firebase-adminsdk-njygj-2bd32f3018.json
 venv/
 __pycache__/
+
+secret.py
