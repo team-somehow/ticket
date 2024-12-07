@@ -8,7 +8,7 @@ import MyTickets from "../pages/MyTickets/MyTickets";
 import MyEvents from "../pages/MyEvents/MyEvents";
 import MyEventDetails from "../pages/MyEventDetails/MyEventDetails";
 import Marketplace from "../pages/Marketplace/Marketplace";
-
+import DistributeTickets from "../pages/DistributeTickets/DistributeTickets";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -76,6 +76,15 @@ const router = createBrowserRouter([
   {
     path: "/redirect",
     element: <RedirectFromLocalStorage />,
+  },
+  {
+    path: '/distribute/:eventId',
+    element: (
+        <>
+        <Navbar/>
+        <DistributeTickets/>
+        </>
+    )
   },
 ]);
 
