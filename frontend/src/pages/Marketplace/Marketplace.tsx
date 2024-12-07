@@ -12,6 +12,7 @@ const weiToEther = (wei: string) => {
 const Marketplace = () => {
   const { address } = useUserAccount();
   const { tickets, loading, error } = useListedTickets();
+
   const { buyTicket, loading: buyLoading, error: buyError } = useBuyTicket();
 
   const handleBuy = async (ticket: any) => {

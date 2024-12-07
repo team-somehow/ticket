@@ -63,12 +63,11 @@ const EventDetails = (props: Props) => {
       alert("Please connect to Spotify first!");
       return;
     }
-    if (!eventDetails || !spotifyUserId || !eventDetails.contractAddress)
-      return;
+
+    if (!eventDetails || !spotifyUserId) return;
     console.log("Staking started...");
 
-
-    applyForEvent(
+    await applyForEvent(
       eventId!,
       spotifyUserId,
       address!,
@@ -78,8 +77,8 @@ const EventDetails = (props: Props) => {
     );
 
     setTimeout(() => {
-        setShowScoreGeneration(true);
-      }, 2500);
+      setShowScoreGeneration(true);
+    }, 2500);
   };
 
   if (loadingEventDetails)
