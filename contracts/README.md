@@ -3,3 +3,15 @@ Base Sepolia Testnet
 
 BNB Smart Chain
 0x714Cfb36Af2FDDB6558775966bB2F42377dB2927
+
+Ts Functions
+
+```bash
+npm i
+npm run build:watch
+```
+
+```bash
+firebase emulators:start --only functions
+
+```
