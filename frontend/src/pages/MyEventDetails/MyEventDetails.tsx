@@ -77,12 +77,27 @@ export default function MyEventDetails() {
       <div className="mb-6 bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo text-center">
         {userStatus === "applied" && (
           <>
-            <h2 className="text-xl font-neo-display text-neo-black uppercase mb-4 font-black">
-              🎉 Congratulations! You are in the Top {fanPercentage}% of Fans 🎉
-            </h2>
+            <div className="mb-6 space-y-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-neo-accent/30 blur-xl scale-95"></div>
+                <h2 className="relative z-10 text-xl font-neo-display text-neo-black uppercase font-black bg-neo-white border-neo border-neo-black p-4 rounded-lg shadow-neo">
+                  🎉 Congratulations! You are in the Top {fanPercentage}% of Fans 🎉
+                </h2>
+              </div>
+              <div className="inline-block bg-neo-white border-neo border-neo-black px-6 py-3 rounded-lg shadow-neo">
+                <div className="relative pb-4 pr-2">
+                  <p className="font-neo-display text-neo-black text-lg uppercase">
+                    Your Fan Score: <span className="text-2xl font-black">{userEventDetails?.score || 0}</span>
+                  </p>
+                  <p className="absolute top-8 bottom-0 right-0 text-[12px] font-neo text-emerald-500 uppercase bg-neo-white px-1">
+                    Score is Attested ✓
+                  </p>
+                </div>
+              </div>
+            </div>
             <button
               onClick={() => window.open(`https://etherscan.io/address/${address}`, "_blank")}
-              className="px-6 py-3 bg-neo-accent border-neo border-neo-black rounded-lg shadow-neo font-neo text-neo-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all font-bold"
+              className="px-4 py-2 text-sm bg-neo-accent border-neo border-neo-black rounded-lg shadow-neo font-neo text-neo-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
             >
               View on Chain
             </button>
