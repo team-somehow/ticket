@@ -12,6 +12,8 @@ export default function MyEventDetails() {
     loading: eventLoading,
     error: eventError,
   } = useMyEventDetails(eventId);
+
+  console.log(useMyEventDetails(eventId));
   const {
     userStatus,
     userEventDetails,
@@ -23,53 +25,64 @@ export default function MyEventDetails() {
   const loading = eventLoading || scoreLoading;
   const error = eventError || scoreError;
 
-  if (loading) {
-    return (
-      <div className="text-center text-3xl font-heading text-text py-8">
-        Loading event details...
+  if (loading) return (
+    <div className="min-h-screen bg-neo-bg p-4">
+      <div className="bg-neo-white border-neo border-neo-black p-6 rounded-lg shadow-neo animate-pulse">
+        <p className="font-neo-display text-xl text-neo-black uppercase">Loading Event Details...</p>
       </div>
-    );
-  }
+    </div>
+  );
 
-  if (error) {
-    return (
-      <div className="text-center text-3xl font-heading text-red-500 py-8">
-        {error}
+  if (error) return (
+    <div className="min-h-screen bg-neo-bg p-4">
+      <div className="bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo">
+        <p className="font-neo-display text-xl text-neo-black uppercase">{error}</p>
       </div>
-    );
-  }
+    </div>
+  );
 
   if (!eventDetails) return null;
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-bg p-5">
-      <h1 className="text-3xl w-90 font-heading text-text mb-5 border-2 border-border p-4 bg-main rounded-base shadow-light">
-        My Event Details
-      </h1>
-
-      {/* Event Details Card */}
-      <div className="bg-bg-secondary border-2 border-border shadow-light rounded-base p-6 w-90 text-center mb-5">
-        <h2 className="text-2xl font-heading text-text mb-4">
-          {eventDetails.name}
-        </h2>
-        <p className="text-sm font-base text-text-secondary mb-4">
-          <strong>Location:</strong> {eventDetails.location}
-        </p>
-        <p className="text-text-muted text-lg">{eventDetails.description}</p>
+    <div className="min-h-screen bg-neo-bg p-4">
+      {/* Header */}
+      <div className="mb-6 bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo">
+        <h1 className="text-3xl sm:text-4xl font-neo-display text-neo-black uppercase tracking-tight">
+          My Event Details
+        </h1>
       </div>
 
-      {/* Congratulations Card */}
-      <div className="bg-mainAccent border-2 border-border shadow-light rounded-base p-6 w-90 text-center mb-5">
+      {/* Event Details Card */}
+      <div className="mb-6 bg-neo-white border-neo border-neo-black p-6 rounded-lg shadow-neo">
+        <img 
+          src={eventDetails.image} 
+          alt={eventDetails.name}
+          className="w-full h-48 object-cover mb-4 border-neo border-neo-black rounded-lg shadow-neo"
+        />
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-neo-display text-neo-black uppercase font-black">
+            {eventDetails.name}
+          </h2>
+          <p className="font-neo-display text-neo-black text-xl uppercase font-black">
+            {(parseInt(eventDetails.ticketPrice) / Math.pow(10, 18)).toFixed(4)} ETH
+          </p>
+        </div>
+        <p className="font-neo text-neo-black mb-2">
+          <span className="uppercase font-bold">Location:</span> {eventDetails.location}
+        </p>
+        <p className="font-neo text-neo-black">{eventDetails.description}</p>
+      </div>
+
+      {/* Status Card */}
+      <div className="mb-6 bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo text-center">
         {userStatus === "applied" && (
           <>
-            <h2 className="text-xl font-heading text-text mb-4">
+            <h2 className="text-xl font-neo-display text-neo-black uppercase mb-4 font-black">
               🎉 Congratulations! You are in the Top {fanPercentage}% of Fans 🎉
             </h2>
             <button
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-main text-text font-base border-2 border-border rounded-base shadow-light hover:bg-mainAccent hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all mx-auto"
-              onClick={() =>
-                window.open(`https://etherscan.io/address/${address}`, "_blank")
-              }
+              onClick={() => window.open(`https://etherscan.io/address/${address}`, "_blank")}
+              className="px-6 py-3 bg-neo-accent border-neo border-neo-black rounded-lg shadow-neo font-neo text-neo-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all font-bold"
             >
               View on Chain
             </button>
@@ -78,68 +91,44 @@ export default function MyEventDetails() {
         {userStatus === "accepted" && (
           <>
             <img
-              src={userEventDetails?.nftUrl} // Replace with the actual NFT ticket URL
+              src={userEventDetails?.nftUrl}
               alt="NFT Ticket"
-              className="mx-auto w-40 h-40 mb-4 border-2 border-border rounded-base shadow-light"
+              className="mx-auto w-40 h-40 mb-4 border-neo border-neo-black rounded-lg shadow-neo"
             />
-            <h2 className="text-xl font-heading text-text mb-4">
+            <h2 className="text-xl font-neo-display text-neo-black uppercase mb-4 font-black">
               🎉 Here is your NFT Ticket 🎉
             </h2>
             <button
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-main text-text font-base border-2 border-border rounded-base shadow-light hover:bg-mainAccent hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all mx-auto"
-              onClick={() =>
-                window.open(`https://etherscan.io/address/${address}`, "_blank")
-              }
+              onClick={() => window.open(`https://etherscan.io/address/${address}`, "_blank")}
+              className="px-6 py-3 bg-neo-accent border-neo border-neo-black rounded-lg shadow-neo font-neo text-neo-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all font-bold"
             >
               View on Chain
             </button>
           </>
         )}
         {userStatus === "rejected" && (
-          <div className="text-xl w-90 font-bold text-text">
+          <p className="text-xl font-neo-display text-neo-black uppercase font-black">
             Unfortunately, you did not get in this time 🥲
-          </div>
+          </p>
         )}
       </div>
 
-      {userStatus != "rejected" && (
-        <></>
-        // <button
-        //   className="flex items-center justify-center gap-2 px-6 py-3 w-90 mb-5 bg-blue-600 text-white font-base border-2 border-border rounded-base shadow-light hover:bg-blue-600 hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all mx-auto"
-        //   onClick={() =>
-        //     window.open(
-        //       `https://t.me/share/url?url=Check out this event! ${window.location.href}`,
-        //       "_blank"
-        //     )
-        //   }
-        // >
-        //   <img
-        //     src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
-        //     alt="Telegram Logo"
-        //     className="w-5 h-5"
-        //   />
-        //   Add Friends via Telegram
-        // </button>
-      )}
-
-      {/* User Status Card */}
-      <div className="bg-bg-secondary border-2 border-border shadow-light rounded-base p-6 w-90 text-center">
-        <p className="text-xl font-bold text-text-primary mb-2">Status</p>
+      {/* Status Details Card */}
+      <div className="bg-neo-white border-neo border-neo-black p-6 rounded-lg shadow-neo text-center">
+        <p className="text-xl font-neo-display text-neo-black uppercase mb-4 font-black">Status</p>
         {userStatus === "applied" && (
-          <p className="text-lg font-base text-text-secondary">
+          <p className="font-neo text-neo-black">
             Thank you for applying, results will be out soon.
           </p>
         )}
         {userStatus === "accepted" && (
-          <div>
-            <p className="text-lg font-base text-text-secondary">
-              🎉 Congratulations on getting in! 🎉 <br />
-              We hope to see you at the Event.
-            </p>
-          </div>
+          <p className="font-neo text-neo-black">
+            🎉 Congratulations on getting in! 🎉 <br />
+            We hope to see you at the Event.
+          </p>
         )}
         {userStatus === "rejected" && (
-          <p className="text-lg font-base text-text-secondary">
+          <p className="font-neo text-neo-black">
             Better luck next time, ticket price will be refunded!
           </p>
         )}
