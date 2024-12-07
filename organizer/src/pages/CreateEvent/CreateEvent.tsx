@@ -1,14 +1,14 @@
-"use client";
-
 import { collection, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../lib/firebase.config";
 import axios from "axios";
 import { firebaseFunctionBaseUrl } from "../../constants/constants";
 import useUserAccount from "../../hooks/account/useUserAccount";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateEvent() {
   const { address } = useUserAccount();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "Cold Play Tour",
     symbol: "CPT",
@@ -29,6 +29,8 @@ export default function CreateEvent() {
       "https://images.hdqwalls.com/download/coldplay-band-wallpaper-3840x2160.jpg",
   });
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -41,6 +43,7 @@ export default function CreateEvent() {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     try {
+      setShowModal(true);
       setLoading(true);
 
       const eventsRef = collection(db, "events");
@@ -51,19 +54,21 @@ export default function CreateEvent() {
         owner: address,
         contractAddress: null,
       });
-      setLoading(false);
 
       // Call the Firebase function to create the contract
       await axios.get(`${firebaseFunctionBaseUrl}/createContract`);
+
+      // Wait for 5 seconds before showing success
+      setTimeout(() => {
+        setLoading(false);
+        setIsSuccess(true);
+      }, 5000);
     } catch (error) {
       console.error("Error creating event:", error);
       setLoading(false);
+      setShowModal(false);
     }
   };
-
-  if (loading) {
-    <div className="text-center text-2xl font-bold py-8">Loading...</div>;
-  }
 
   return (
     <div className="min-h-screen bg-blue-50 flex items-center justify-center p-6">
@@ -320,6 +325,44 @@ export default function CreateEvent() {
           Create Event
         </button>
       </form>
+
+      {/* Add Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 flex flex-col items-center space-y-6 max-w-sm w-full mx-4 border-4 border-black">
+            {loading ? (
+              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-black"></div>
+            ) : (
+              <div className="h-16 w-16 rounded-full bg-green-500 flex items-center justify-center border-4 border-black">
+                <svg
+                  className="h-10 w-10 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            )}
+            <p className="text-2xl font-bold text-center">
+              {loading ? "Creating Event..." : "Event Created Successfully!"}
+            </p>
+            {isSuccess && (
+              <button
+                onClick={() => navigate("/my-events")}
+                className="px-6 py-3 bg-black text-white font-bold rounded-md hover:bg-gray-800 hover:-translate-y-1 hover:translate-x-1 transition-all border-2 border-black"
+              >
+                Go to My Events
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
