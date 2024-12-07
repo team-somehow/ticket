@@ -6,7 +6,7 @@ import { bscTestnet } from "wagmi/chains";
 export const config = createConfig({
   chains: [mainnet, sepolia, bscTestnet],
   connectors: [
-    injected(),
+    // injected(),
     coinbaseWallet(),
     // walletConnect({ projectId: import.meta.env.VITE_WC_PROJECT_ID }),
   ],
