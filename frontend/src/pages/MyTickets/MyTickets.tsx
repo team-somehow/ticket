@@ -16,7 +16,7 @@ export default function MyTickets() {
 
   if (loading) {
     return (
-      <div className="text-center text-2xl font-bold py-8">
+      <div className="font-neo-display text-center text-2xl text-neo-black p-8">
         Loading your tickets...
       </div>
     );
@@ -24,51 +24,58 @@ export default function MyTickets() {
 
   if (error) {
     return (
-      <div className="text-center text-red-500 text-2xl font-bold py-8">
+      <div className="font-neo-display text-center text-2xl text-neo-black p-8">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-bg p-8">
-      <h1 className="text-4xl font-bold text-text mb-8 border-4 border-border p-4 bg-main rounded-base shadow-light">
+    <div className="min-h-screen bg-neo-bg p-4 sm:p-6 md:p-8">
+      <h1 className="text-3xl sm:text-4xl font-neo-display text-neo-black mb-6 sm:mb-8 text-center uppercase tracking-tight">
         My Tickets
       </h1>
-      <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto">
         {tickets.map((ticket) => (
           <div
             key={ticket.userEventDocId}
-            className="bg-bg-secondary border-2 border-border shadow-light rounded-base p-6 flex"
+            className="bg-neo-white border-neo border-neo-black rounded-lg p-4 shadow-neo hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all"
           >
-            <div className="flex-1">
-              <h2 className="text-2xl font-heading text-text mb-4">
-                {ticket.eventName}
-              </h2>
-              <p className="text-lg font-base text-text-secondary mb-2">
-                <strong>City:</strong> {ticket.city}
-              </p>
-              {ticket.isListed ? (
-                <p className="text-green-500 font-bold">
-                  Listed on Marketplace
-                </p>
-              ) : (
-                <button
-                  className="px-4 py-2 w-full text-sm font-base text-text bg-main border-2 border-border rounded-base shadow-light hover:bg-mainAccent hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
-                  onClick={() => handleSell(ticket.userEventDocId)}
-                >
-                  Sell
-                </button>
-              )}
-            </div>
-            {ticket.nftUrl && (
-              <div className="flex-shrink-0 ml-4">
+            <div className="aspect-square mb-4 rounded-lg border-neo border-neo-black overflow-hidden relative">
+              <div className="absolute inset-0 bg-neo-primary/30 blur-xl scale-95"></div>
+              {ticket.nftUrl ? (
                 <img
                   src={ticket.nftUrl}
                   alt={`${ticket.eventName} NFT`}
-                  className="w-40 h-40 object-cover rounded-base"
+                  className="w-full h-full object-cover relative z-10 rounded-lg"
                 />
-              </div>
+              ) : (
+                <div className="flex items-center justify-center h-full bg-neo-white relative z-10 text-neo-black/60 font-neo uppercase">
+                  No NFT Image
+                </div>
+              )}
+            </div>
+
+            <h2 className="text-xl font-neo-display text-neo-black mb-2 uppercase tracking-tight line-clamp-1">
+              {ticket.eventName}
+            </h2>
+            
+            <p className="text-sm font-neo text-neo-black mb-4 uppercase">
+              📍 {ticket.city}
+            </p>
+
+            {ticket.isListed ? (
+              <p className="font-neo text-neo-primary uppercase text-center border-neo border-neo-black rounded-lg p-2">
+                Listed on Marketplace
+              </p>
+            ) : (
+              <button
+                onClick={() => handleSell(ticket.userEventDocId)}
+                className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-primary border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider"
+              >
+                Sell Ticket
+              </button>
             )}
           </div>
         ))}
