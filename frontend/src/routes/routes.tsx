@@ -5,6 +5,8 @@ import UpcomingEvents from "../pages/UpcomingEvents/UpcomingEvents";
 import EventDetails from "../pages/EventDetails/EventDetails";
 import RedirectFromLocalStorage from "../components/RedirectFromLocalStorage/RedirectFromLocalStorage";
 import MyTickets from "../pages/MyTickets/MyTickets";
+import MyEvents from "../pages/MyEvents/MyEvents";
+import MyEventDetails from "../pages/MyEventDetails/MyEventDetails";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,24 @@ const router = createBrowserRouter([
     element: (
       <>
         <Navbar /> <EventDetails />,
+      </>
+    ),
+  },
+
+  {
+    path: "my-events",
+    element: (
+      <>
+        <Navbar /> <MyEvents />,
+      </>
+    ),
+  },
+
+  {
+    path: "my-events/:eventId",
+    element: (
+      <>
+        <Navbar /> <MyEventDetails />,
       </>
     ),
   },

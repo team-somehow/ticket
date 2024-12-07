@@ -62,7 +62,7 @@ const EventCard = ({
               navigate(pathname.includes("events") ? `${id}` : `events/${id}`);
           }}
         >
-          Book Now
+          {!myEvent ? "Book Now" : "View Event"}
         </button>
       </div>
     </div>
