@@ -177,7 +177,7 @@ const EventDetails = (props: Props) => {
                   className={cn(
                     "w-full px-6 py-3 text-base font-neo text-neo-black border-neo border-neo-black rounded-lg shadow-neo uppercase tracking-wider transition-all hover:-translate-y-1 hover:translate-x-1 hover:shadow-none",
                     spotifyConnected
-                      ? "bg-neo-accent"
+                      ? "bg-neo-primary"
                       : "bg-neo-white cursor-not-allowed opacity-50"
                   )}
                   onClick={handleStake}
