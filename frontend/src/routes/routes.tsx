@@ -7,6 +7,7 @@ import RedirectFromLocalStorage from "../components/RedirectFromLocalStorage/Red
 import MyTickets from "../pages/MyTickets/MyTickets";
 import MyEvents from "../pages/MyEvents/MyEvents";
 import MyEventDetails from "../pages/MyEventDetails/MyEventDetails";
+import Marketplace from "../pages/Marketplace/Marketplace";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,15 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <MyTickets />
+      </>
+    ),
+  },
+
+  {
+    path: "/marketplace",
+    element: (
+      <>
+        <Navbar /> <Marketplace />,
       </>
     ),
   },
