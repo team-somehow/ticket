@@ -85,22 +85,32 @@ export default function MyEventDetails() {
                 </h2>
               </div>
               <div className="inline-block bg-neo-white border-neo border-neo-black px-6 py-3 rounded-lg shadow-neo">
-                <div className="relative pb-4 pr-2">
+                <div className="relative pb-12 pr-2">
                   <p className="font-neo-display text-neo-black text-lg uppercase">
                     Your Fan Score: <span className="text-2xl font-black">{userEventDetails?.score || 0}</span>
                   </p>
-                  <p className="absolute top-8 bottom-0 right-0 text-[12px] font-neo text-emerald-500 uppercase bg-neo-white px-1">
-                    Score is Attested ✓
-                  </p>
+                  <a
+                    href="https://www.truenetwork.io/explorer/raman/0x5e06ec4eb2edf0239ef2408b5cb65504018b29b4cfbb33bc234a7e2acf1f0cd4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 mt-2 border border-radius-5 absolute top-8 bottom-0 right-0 font-neo uppercase bg-neo-white px-3 hover:text-emerald-600 transition-colors cursor-pointer flex items-center gap-1 text-sm"
+                  >
+                    <img 
+                      src="/icons/polkadot.png" 
+                      alt="Verified" 
+                      className="w-8 h-8"
+                    />
+                    Attested
+                  </a>
                 </div>
               </div>
             </div>
-            <button
-              onClick={() => window.open(`https://etherscan.io/address/${address}`, "_blank")}
+            {eventDetails?.scanUrl?.length > 0 &&<button
+              onClick={() => window.open(eventDetails?.scanUrl, "_blank")}
               className="px-4 py-2 text-sm bg-neo-accent border-neo border-neo-black rounded-lg shadow-neo font-neo text-neo-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
             >
               View on Chain
-            </button>
+            </button>}
           </>
         )}
         {userStatus === "accepted" && (
@@ -113,12 +123,12 @@ export default function MyEventDetails() {
             <h2 className="text-xl font-neo-display text-neo-black uppercase mb-4 font-black">
               🎉 Here is your NFT Ticket 🎉
             </h2>
-            <button
-              onClick={() => window.open(`https://etherscan.io/address/${address}`, "_blank")}
+            {eventDetails?.scanUrl?.length > 0 &&<button
+              onClick={() => window.open(eventDetails?.scanUrl, "_blank")}
               className="px-6 py-3 bg-neo-accent border-neo border-neo-black rounded-lg shadow-neo font-neo text-neo-black uppercase hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all font-bold"
             >
               View on Chain
-            </button>
+            </button>}
           </>
         )}
         {userStatus === "rejected" && (

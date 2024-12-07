@@ -27,17 +27,15 @@ export default function ScoreGeneration({ eventId }: ScoreGenerationProps) {
       if (stepCount <= steps.length - 1) {
         setCurrentStep(stepCount);
         if (stepCount === steps.length - 1) {
-          // Trigger confetti and redirect after the last step
           confetti({
             particleCount: 100,
             spread: 70,
             origin: { y: 0.6 }
           });
           
-          // Add a small delay before redirect to show the final step and confetti
           setTimeout(() => {
             navigate(`/my-events/${eventId}`);
-          }, 1500);
+          }, 2500);
         }
       }
     }, stepInterval);
@@ -105,6 +103,16 @@ export default function ScoreGeneration({ eventId }: ScoreGenerationProps) {
                       }`}
                     >
                       {step}
+                      {index === steps.length - 1 && isDone && (
+                        <a
+                          href="https://www.truenetwork.io/explorer/raman/0x5e06ec4eb2edf0239ef2408b5cb65504018b29b4cfbb33bc234a7e2acf1f0cd4"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-2 text-emerald-500 font-bold hover:text-emerald-600 transition-colors cursor-pointer"
+                        >
+                          (View on Polkadot)
+                        </a>
+                      )}
                     </span>
                     {isCurrent && index < steps.length - 1 && (
                       <img
