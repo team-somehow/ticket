@@ -8,6 +8,8 @@ import useCustomReadContract from "../../hooks/useCustomReadContract";
 import useEventDetails from "../../hooks/get/events/useEventDetails";
 import useUserStatus from "../../hooks/get/events/useUserStatus";
 import useApplyForEvent from "../../hooks/write/events/useApplyForEvent";
+import { useQuery } from "@apollo/client";
+import { stakesReceivedsQuery } from "../../queries";
 
 type Props = {};
 
@@ -17,6 +19,8 @@ const EventDetails = (props: Props) => {
   const { address } = useUserAccount();
   const [spotifyConnected, setSpotifyConnected] = useState(false);
   const [spotifyUserId, setSpotifyUserId] = useState<string | null>(null);
+  const { data } = useQuery(stakesReceivedsQuery);
+  console.log(data);
 
   const { eventDetails, loadingEventDetails, eventError } =
     useEventDetails(eventId);
