@@ -1,8 +1,14 @@
 #[starknet::contract]
-mod MyNFT {
+mod TicketProtocol {
     use openzeppelin_introspection::src5::SRC5Component;
     use openzeppelin_token::erc721::{ERC721Component, ERC721HooksEmptyImpl};
-    use starknet::ContractAddress;
+
+    // use starknet::{get_caller_address, ContractAddress};
+    use starknet::get_caller_address;
+    use core::array::Array;
+    use core::string;
+    // use starknet::syscalls::transfer;
+
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
@@ -14,10 +20,13 @@ mod MyNFT {
 
     #[storage]
     struct Storage {
+        pub totalTickets: u32,
+        pub stake_amount: u128,  
+        // pub applicants_list: Array<ContractAddress>,          
         #[substorage(v0)]
         erc721: ERC721Component::Storage,
         #[substorage(v0)]
-        src5: SRC5Component::Storage
+        src5: SRC5Component::Storage,
     }
 
     #[event]
@@ -32,14 +41,37 @@ mod MyNFT {
     #[constructor]
     fn constructor(
         ref self: ContractState,
-        recipient: ContractAddress
+        total_no_tickets: u32,
+        // recipient: ContractAddress
     ) {
-        let name = "MyNFT";
-        let symbol = "NFT";
+        let name = "Coldplay Ticket";
+        let symbol = "CT";
         let base_uri = "https://api.example.com/v1/";
         let token_id = 1;
+        let recipient = get_caller_address();
+
+        self.totalTickets.write(total_no_tickets);
 
         self.erc721.initializer(name, symbol, base_uri);
         self.erc721.mint(recipient, token_id);
     }
+
+    fn stake_and_apply(ref self: ContractState, sent_amount: u128) {
+        
+        // Read the stake amount required
+        let required_stake = self.stake_amount.read();
+        assert(sent_amount >= required_stake, 'Insufficient staking amount');
+    }
+
+    fn transfer_funds(
+        // recipient: ContractAddress,
+        amount: u256,
+    ) {
+        // Perform the fund transfer
+        // let result = transfer(recipient, amount);
+
+        // Revert if the transfer failed
+        // assert(result == 1, "Transfer failed");
+    }
+
 }
