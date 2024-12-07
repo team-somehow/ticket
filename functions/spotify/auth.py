@@ -8,16 +8,16 @@ from google.cloud import firestore
 from functions_framework import http
 from firebase_functions import https_fn
 from dotenv import load_dotenv
+from .secret import secrets
 
 load_dotenv()
 
 
 # Load environment variables
-CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
-CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-SCOPES = os.getenv(
-    "SCOPES", "user-top-read playlist-read-private user-follow-read")
+CLIENT_ID = secrets["SPOTIFY_CLIENT_ID"]
+CLIENT_SECRET = secrets["SPOTIFY_CLIENT_SECRET"]
+REDIRECT_URI = secrets["SPOTIFY_REDIRECT_URI"]
+SCOPES = secrets.get("SCOPES", "user-top-read playlist-read-private user-follow-read")
 
 
 @http

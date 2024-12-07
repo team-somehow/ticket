@@ -72,38 +72,54 @@ const UpcomingEvents = () => {
     return matchesName && matchesLocation && matchesPrice;
   });
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return (
+    <div className="min-h-screen bg-neo-bg p-4">
+      <div className="bg-neo-white border-neo border-neo-black p-6 rounded-lg shadow-neo animate-pulse">
+        <p className="font-neo-display text-xl text-neo-black uppercase">Loading Events...</p>
+      </div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="min-h-screen bg-neo-bg p-4">
+      <div className="bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo">
+        <p className="font-neo-display text-xl text-neo-black uppercase">{error}</p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-bg dark:bg-darkBg py-8 px-8">
-      <h1 className="text-5xl font-heading text-text dark:text-darkText mb-7">
-        Upcoming Events
-      </h1>
-
-      {/* Search Bar */}
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Search by event name..."
-          value={searchQuery}
-          onChange={handleSearch}
-          className="w-full px-4 py-2 border-2 border-border dark:border-darkBorder rounded-base bg-bg dark:bg-darkBg text-text dark:text-darkText shadow-light dark:shadow-dark focus:outline-none focus:border-main"
-        />
+    <div className="min-h-screen bg-neo-bg p-4">
+      {/* Header */}
+      <div className="mb-6 bg-neo-primary border-neo border-neo-black p-6 rounded-lg shadow-neo">
+        <h1 className="text-3xl sm:text-4xl font-neo-display text-neo-black uppercase tracking-tight">
+          Upcoming Events
+        </h1>
       </div>
 
-      {/* Filter Bar */}
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Filters Container */}
+      <div className="mb-8 bg-neo-white border-neo border-neo-black rounded-lg shadow-neo overflow-hidden">
+        {/* Search Bar */}
+        <div className="p-4 border-b-neo border-neo-black">
+          <input
+            type="text"
+            placeholder="Search events..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="w-full px-4 py-3 bg-neo-bg border-neo border-neo-black rounded-lg font-neo text-neo-black placeholder-neo-black/50 focus:outline-none focus:bg-neo-white transition-all"
+          />
+        </div>
+
         {/* Location Filter */}
-        <div className="relative">
+        <div className="p-4 border-b-neo border-neo-black">
           <select
             value={filters.location}
             onChange={(e) => handleFilterChange("location", e.target.value)}
-            className="w-full px-4 py-4 border-2 border-border dark:border-darkBorder rounded-base bg-bg dark:bg-darkBg text-text dark:text-darkText shadow-light dark:shadow-dark focus:outline-none focus:border-main"
+            className="w-full px-4 py-3 bg-neo-bg border-neo border-neo-black rounded-lg font-neo text-neo-black uppercase focus:outline-none hover:bg-neo-white transition-all cursor-pointer"
           >
-            <option value="">Filter by location</option>
+            <option value="">Select Location</option>
             {allLocations.map((location) => (
-              <option key={location} value={location}>
+              <option key={location} value={location} className="uppercase">
                 {location}
               </option>
             ))}
@@ -111,8 +127,16 @@ const UpcomingEvents = () => {
         </div>
 
         {/* Price Filter */}
-        <div className="relative">
-          <div className="bg-bg dark:bg-darkBg py-4 border-2 border-border dark:border-darkBorder rounded-base shadow-light dark:shadow-dark flex items-center">
+        <div className="p-4">
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label className="font-neo text-neo-black uppercase text-sm">
+                Price Range
+              </label>
+              <span className="font-neo-display text-neo-black">
+                {filters.priceRange[1]} ETH
+              </span>
+            </div>
             <input
               type="range"
               min="0"
@@ -125,30 +149,35 @@ const UpcomingEvents = () => {
                   parseInt(e.target.value, 10) / 10,
                 ])
               }
-              className="w-full ml-4"
+              className="w-full h-2 bg-neo-bg rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-neo-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-neo-black [&::-webkit-slider-thumb]:rounded-full"
             />
-            <p className="w-full ml-4 text-text dark:text-darkText">
-              Max Price: {filters.priceRange[1]} ETH
-            </p>
           </div>
         </div>
       </div>
 
       {/* Event Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEvents.map((event, index) => (
-          <EventCard
-            key={event.id}
-            id={event.id}
-            name={event.name}
-            location={event.location}
-            description={event.description}
-            image={event.image}
-            ticketPrice={event.ticketPrice.toString()}
-            myEvent={false}
-          />
-        ))}
-      </div>
+      {filteredEvents.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredEvents.map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              name={event.name}
+              location={event.location}
+              description={event.description}
+              image={event.image}
+              ticketPrice={event.ticketPrice.toString()}
+              myEvent={false}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="bg-neo-white border-neo border-neo-black p-6 rounded-lg shadow-neo">
+          <p className="font-neo text-lg text-neo-black text-center">
+            No events found
+          </p>
+        </div>
+      )}
     </div>
   );
 };

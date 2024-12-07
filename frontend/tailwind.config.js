@@ -6,7 +6,7 @@ export default {
       colors: {
         'neo-black': '#171717',
         'neo-white': '#FFFFFF',
-        'neo-primary': '#FF5733',
+        'neo-primary': '#47B5FF',
         'neo-secondary': '#47B5FF',
         'neo-accent': '#FFD700',
         'neo-bg': '#F5F5F5',
