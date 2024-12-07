@@ -10,24 +10,23 @@
         "firebase-debug.*.log",
         "*.local"
       ]
-    },
-    {
-      "source": "functions-web3-ts",
-      "codebase": "functions-web3-ts",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
     }
   ],
   "hosting": [
     {
       "site": "ttp-somehow",
       "public": "frontend/dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "site": "organizer-somehow",
+      "public": "organizer/dist",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {

@@ -18,4 +18,5 @@ export interface Event {
   ticketPrice: string;
   ticketsToSell: string;
   totalTickets: string;
+  scanUrl: string;
 }

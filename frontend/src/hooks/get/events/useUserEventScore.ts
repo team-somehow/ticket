@@ -48,8 +48,11 @@ const useUserEventScore = (
           scores.sort((a, b) => b - a);
 
           const userScoreIndex = scores.indexOf(userDoc.score);
-          const percentageAbove =
-            ((scores.length - userScoreIndex - 1) / scores.length) * 100;
+          let percentageAbove =
+            ((scores.length - userScoreIndex) / scores.length) * 100;
+        
+            if(percentageAbove >= 100) percentageAbove = 66.67;
+            if(percentageAbove <= 5) percentageAbove = 33.33;
 
           setFanPercentage(percentageAbove);
         } else {

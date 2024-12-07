@@ -8,7 +8,7 @@ export default {
         'neo-white': '#FFFFFF',
         'neo-primary': '#47B5FF',
         'neo-secondary': '#47B5FF',
-        'neo-accent': '#FFD700',
+        'neo-accent': '#f44336',
         'neo-bg': '#F5F5F5',
       },
       boxShadow: {
