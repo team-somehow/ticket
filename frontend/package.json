@@ -24,6 +24,7 @@
     "starknetkit": "^2.6.1",
     "tailwind-merge": "^2.5.5",
     "viem": "latest",
+    "vite-plugin-pwa": "^0.21.1",
     "wagmi": "latest"
   },
   "devDependencies": {
