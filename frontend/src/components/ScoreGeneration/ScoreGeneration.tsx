@@ -1,43 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
+import { useNavigate } from 'react-router-dom';
 
 type ScoreGenerationProps = {
-  finalScore: number;
-  onClose: () => void; // A callback prop to close the dialog
+  eventId: string;
 };
 
-export default function ScoreGeneration({ finalScore, onClose }: ScoreGenerationProps) {
+export default function ScoreGeneration({ eventId }: ScoreGenerationProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
 
   const steps = [
     "Connecting to Spotify",
-    "Fetching data related to your Artists",
-    "Generating Score",
-    "Score Generated",
+    "Fetching data related to the artist",
+    "Fetching number of playlists related to the artists",
+    "Calculating total watchtime for the artist",
+    "Calculating score for event",
   ];
 
   useEffect(() => {
-    const stepInterval = 2500; // Move to the next step every 2.5 seconds
+    const stepInterval = 5000;
     let stepCount = 0;
 
     const interval = setInterval(() => {
       stepCount += 1;
-      if (stepCount <= 3) {
+      if (stepCount <= steps.length - 1) {
         setCurrentStep(stepCount);
-      } else {
-        clearInterval(interval);
+        if (stepCount === steps.length - 1) {
+          // Trigger confetti and redirect after the last step
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+          
+          // Add a small delay before redirect to show the final step and confetti
+          setTimeout(() => {
+            navigate(`/my-events/${eventId}`);
+          }, 1500);
+        }
       }
     }, stepInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [eventId, navigate]);
 
-  const loadingGifUrl = "https://i.gifer.com/ZZ5H.gif"; // Replace with your desired loading GIF URL
+  const loadingGifUrl = "https://i.gifer.com/ZZ5H.gif";
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-neo-black/60 z-50 p-4">
       <div
         className="relative bg-neo-white w-full max-w-md sm:max-w-lg rounded-lg border-neo border-neo-black shadow-neo-xl p-6 sm:p-8"
-        style={{ minHeight: '420px' }} // Adjust min height for additional spacing
+        style={{ minHeight: '420px' }}
       >
         <div className="flex flex-col justify-between h-full">
           {/* Title Section */}
@@ -45,28 +59,21 @@ export default function ScoreGeneration({ finalScore, onClose }: ScoreGeneration
             <h2
               className="font-neo-display text-neo-black text-center flex items-center justify-center gap-3"
               style={{
-                fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', // Balanced range for font size
-                fontWeight: '700', // Bold for emphasis
-                letterSpacing: '0.05em', // Slight spacing for clarity
-                textTransform: 'uppercase', // Uppercase for a clean title style
-                lineHeight: '1.2', // Adjusted line-height for better readability
+                fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
+                fontWeight: '700',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                lineHeight: '1.2',
               }}
             >
-              {steps[currentStep]}
-              {/* {currentStep < steps.length - 1 && (
-                <img
-                  src={loadingGifUrl}
-                  alt="Loading"
-                  className="w-6 h-6 sm:w-7 sm:h-7"
-                />
-              )} */}
+              Generating Score
             </h2>
           </div>
 
           {/* Stepper */}
           <div className="relative space-y-6 sm:space-y-8">
             {steps.map((step, index) => {
-              const isDone = index <= currentStep; // Include the final step
+              const isDone = index <= currentStep;
               const isCurrent = index === currentStep;
 
               return (
@@ -111,21 +118,6 @@ export default function ScoreGeneration({ finalScore, onClose }: ScoreGeneration
               );
             })}
           </div>
-
-          {/* Final Step */}
-          {currentStep === steps.length - 1 && (
-            <div className="mt-8 sm:mt-10 text-center">
-              <p className="text-2xl sm:text-3xl font-neo-display text-neo-black mb-6 sm:mb-8">
-                Your Score: <span className="text-green-600">{finalScore}</span>
-              </p>
-              <button
-                onClick={onClose}
-                className="w-full px-6 py-3 sm:px-8 sm:py-4 text-base sm:text-lg font-neo text-neo-white bg-green-500 rounded-lg shadow-neo hover:bg-green-600 hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider"
-              >
-                Close
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>
