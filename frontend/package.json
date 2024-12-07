@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5177",
     "build": "tsc && vite build",
     "lint": "biome check .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "5.45.1",
+    "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
