@@ -7,10 +7,15 @@ from spotify.utils import get_spotify_data, calculate_fan_score_algorithm
 from storage.akave import api_request
 import json
 from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import credentials
 
 load_dotenv()
 
 db = firestore.Client()
+
+cred = credentials.Certificate("./personal-projects-e8a07-firebase-adminsdk-njygj-2bd32f3018.json")
+firebase_admin.initialize_app(cred)
 
 AGGREGATOR_URL = os.getenv("WALRUS_AGGREGATOR_URL")  
 PUBLISHER_URL = os.getenv("WALRUS_PUBLISHER_URL") 
