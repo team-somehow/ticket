@@ -60,28 +60,26 @@ const EventDetails = (props: Props) => {
 
   const handleStake = async () => {
     try {
+      if (!spotifyConnected) {
+        alert("Please connect to Spotify first!");
+        return;
+      }
 
-        if (!spotifyConnected) {
-          alert("Please connect to Spotify first!");
-          return;
-        }
-    
-        if (!eventDetails || !spotifyUserId) return;
-        console.log("Staking started...");
+      if (!eventDetails || !spotifyUserId) return;
+      console.log("Staking started...");
 
       setShowScoreGeneration(true);
 
-    
-        await applyForEvent(
-          eventId!,
-          spotifyUserId,
-          address!,
-          eventDetails.artist,
-          eventDetails.stakeAmount,
-          eventDetails.contractAddress
-        );
+      await applyForEvent(
+        eventId!,
+        spotifyUserId,
+        address!,
+        eventDetails.artist,
+        eventDetails.stakeAmount,
+        eventDetails.contractAddress as `0x${string}`
+      );
     } catch {
-    //   alert("Failed to stake and apply");
+      //   alert("Failed to stake and apply");
     }
 
     // setTimeout(() => {
