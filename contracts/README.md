@@ -18,3 +18,19 @@ firebase emulators:start --only functions
 
 Coinbase wallet address
 db8ee26d-7661-4d3b-a649-7e3296b184e1
+
+{
+"source": "web3-interactions",
+"codebase": "web3-interactions",
+"ignore": [
+"node_modules",
+".git",
+"firebase-debug.log",
+"firebase-debug.*.log",
+"*.local"
+],
+"predeploy": [
+"npm --prefix \"$RESOURCE_DIR\" run lint",
+"npm --prefix \"$RESOURCE_DIR\" run build"
+]
+}
