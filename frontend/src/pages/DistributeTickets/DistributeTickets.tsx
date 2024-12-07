@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../lib/firebase.config";
 import axios from "axios";
+import { firebaseFunctionBaseUrl } from "../../constants/constants";
 
 export default function DistributeTickets() {
   const { eventId } = useParams(); // Get the event ID from the URL
   const [eventDetails, setEventDetails] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const firebaseFunctionBaseUrl = "http://127.0.0.1:5001/personal-projects-e8a07/us-central1";
 
   useEffect(() => {
     const fetchEventDetails = async () => {
