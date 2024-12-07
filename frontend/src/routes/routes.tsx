@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import UpcomingEvents from "../pages/UpcomingEvents/UpcomingEvents";
 import EventDetails from "../pages/EventDetails/EventDetails";
 import RedirectFromLocalStorage from "../components/RedirectFromLocalStorage/RedirectFromLocalStorage";
+import MyTickets from "../pages/MyTickets/MyTickets";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,16 @@ const router = createBrowserRouter([
     element: (
       <>
         <Navbar /> <EventDetails />,
+      </>
+    ),
+  },
+
+  {
+    path: "/my-tickets",
+    element: (
+      <>
+        <Navbar />
+        <MyTickets />
       </>
     ),
   },
