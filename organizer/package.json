@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5178",
+    "dev": "vite --port 5177",
     "build": "vite build",
     "lint": "biome check .",
     "preview": "vite preview"
