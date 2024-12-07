@@ -15,3 +15,6 @@ npm run build:watch
 firebase emulators:start --only functions
 
 ```
+
+Coinbase wallet address
+db8ee26d-7661-4d3b-a649-7e3296b184e1
