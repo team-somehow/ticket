@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useWriteContract } from "wagmi";
-import TicketProtocol from "../../artifacts/TicketProtocol.json";
-import {
-  doc,
-  getDoc,
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { db } from "../../lib/firebase.config";
 import { cn } from "../../lib/utils";
-import axios from "axios";
 import useUserAccount from "../../hooks/account/useUserAccount";
-import { firebaseFunctionBaseUrl } from "../../constants/constants";
-import { Event } from "../../types/event";
 import ConnectToSpotify from "../../components/ConnectToSpotify/ConnectToSpotify";
 import useCustomReadContract from "../../hooks/useCustomReadContract";
+import useEventDetails from "../../hooks/get/events/useEventDetails";
+import useUserStatus from "../../hooks/get/events/useUserStatus";
+import useApplyForEvent from "../../hooks/write/events/useApplyForEvent";
 
 type Props = {};
 
@@ -26,14 +15,17 @@ const EventDetails = (props: Props) => {
   const { eventId } = useParams();
   const [searchParams] = useSearchParams();
   const { address } = useUserAccount();
-  //   const { showSnackbar } = useSnackbar();
-
-  const [eventDetails, setEventDetails] = useState<Event | null>(null);
-  const [loadingEventDetails, setLoadingEventDetails] = useState(true);
-  const [eventError, setEventError] = useState<string | null>(null);
   const [spotifyConnected, setSpotifyConnected] = useState(false);
   const [spotifyUserId, setSpotifyUserId] = useState<string | null>(null);
-  const [userStatus, setUserStatus] = useState<string | null>(null);
+
+  const { eventDetails, loadingEventDetails, eventError } =
+    useEventDetails(eventId);
+  const { userStatus } = useUserStatus(eventId, address);
+  const {
+    applyForEvent,
+    loading: applying,
+    error: applyError,
+  } = useApplyForEvent();
 
   const { writeContract } = useWriteContract();
 
@@ -50,118 +42,32 @@ const EventDetails = (props: Props) => {
       []
     );
 
-  const { data: ownerAddress, isLoading: isOwnerLoading } =
-    useCustomReadContract(
-      eventDetails?.contractAddress as `0x${string}`,
-      "owner",
-      []
-    );
-
   useEffect(() => {
     const spotify_user_id = searchParams.get("spotify_user_id");
     if (spotify_user_id) {
       setSpotifyUserId(spotify_user_id);
       setSpotifyConnected(true);
       localStorage.setItem("spotify_user_id", spotify_user_id);
-      //   showSnackbar("Spotify connected successfully");
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    const fetchEventDetails = async () => {
-      setLoadingEventDetails(true);
-      setEventError(null);
-      try {
-        // Fetch event details
-        const eventDoc = doc(db, "events", eventId!);
-        const eventSnapshot = await getDoc(eventDoc);
-
-        if (eventSnapshot.exists()) {
-          setEventDetails(eventSnapshot.data() as Event);
-        } else {
-          setEventError("Event not found");
-        }
-      } catch (error) {
-        setEventError("Failed to fetch event details");
-        console.error("Error fetching event details:", error);
-      } finally {
-        setLoadingEventDetails(false);
-      }
-    };
-
-    const fetchUserStatus = async () => {
-      if (!address || !eventId) return;
-
-      try {
-        // Query the event_user collection for the user's status
-        const eventUserRef = collection(db, "user_applied_events");
-        const q = query(
-          eventUserRef,
-          where("eventId", "==", eventId),
-          where("userWalletAddress", "==", address)
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          const userDoc = querySnapshot.docs[0].data();
-          setUserStatus(userDoc.status);
-        } else {
-          setUserStatus("not applied");
-        }
-      } catch (error) {
-        console.error("Error fetching user status:", error);
-        setUserStatus(null);
-      }
-    };
-
-    console.log(address);
-
-    fetchEventDetails();
-    fetchUserStatus();
-  }, [eventId, address]);
 
   const handleStake = async () => {
     if (!spotifyConnected) {
       alert("Please connect to Spotify first!");
       return;
     }
-    try {
-      if (!eventDetails || !spotifyUserId) return;
+    if (!eventDetails || !spotifyUserId) return;
 
-      setLoadingEventDetails(true);
-
-      // Fetch score and artist name
-      const response = await axios.get(
-        `${firebaseFunctionBaseUrl}/calculate_fan_score?user_id=${spotifyUserId}&artist_name=${eventDetails.artist}`
-      );
-      console.log(response.data);
-
-      // Add document with score and artist name
-      const eventUserRef = collection(db, "user_applied_events");
-      await addDoc(eventUserRef, {
-        eventId: eventId,
-        isListed: false,
-        userId: spotifyUserId,
-        userWalletAddress: address,
-        status: "applied",
-        score: response.data.fan_score,
-        artist_name: response.data.artist_name,
-      });
-
-      setUserStatus("applied");
-      //   showSnackbar("Ticket Price !");
-    } catch (error) {
-      console.error("Stake error:", error);
-    } finally {
-      setLoadingEventDetails(false);
+    const result = await applyForEvent(
+      eventId!,
+      spotifyUserId,
+      address!,
+      eventDetails.artist
+    );
+    if (result.success) {
+      // setUserStatus("applied");
     }
   };
-
-  console.log({
-    isStaked,
-    stakeAmount,
-    ownerAddress,
-  });
 
   if (loadingEventDetails)
     return (
@@ -230,10 +136,13 @@ const EventDetails = (props: Props) => {
                   : "bg-secondaryBlack cursor-not-allowed"
               )}
               onClick={handleStake}
-              disabled={!spotifyConnected}
+              disabled={!spotifyConnected || applying}
             >
               Book Ticket
             </button>
+            {applyError && (
+              <p className="text-red-500 text-center mt-2">{applyError}</p>
+            )}
           </>
         )}
       </div>
