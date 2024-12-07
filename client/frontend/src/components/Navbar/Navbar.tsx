@@ -2,28 +2,43 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSource } from "../../context/SourceContext";
+import { connect, disconnect } from "starknetkit";
 import { Menu, X } from "lucide-react";
+
+import { WebWalletConnector } from "starknetkit/webwallet";
+import { InjectedConnector } from "starknetkit/injected";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { wallet, connect, disconnect } = useSource();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
-  const isConnected = !!wallet;
+  const [account, setAccount] = useState<string | null>(null);
 
-  const handleDisconnect = () => {
-    disconnect();
-    setIsMenuOpen(false);
+  const handleConnect = async () => {
+    try {
+      const { wallet, connectorData } = await connect({
+        connectors: [
+          new WebWalletConnector(),
+          new InjectedConnector({ options: { id: "braavos" } }),
+        ],
+      });
+      setAccount(connectorData?.account ?? null);
+      console.log("Connected account:", account);
+    } catch (error) {
+      console.error("Connection failed:", error);
+    }
   };
 
-  const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
+  const handleDisconnect = async () => {
+    await disconnect();
+    setAccount(null);
+    console.log("Disconnected");
+  };
 
-  const buttonStyles =
-    "w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider";
-  const mobileButtonStyles =
-    "w-full px-4 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider";
+  const isConnected = account !== null;
+
+  const toggleDropdown = () => setDropdownVisible(!dropdownVisible);
 
   return (
     <nav className="sticky top-0 z-50 bg-neo-white border-b-neo border-neo-black shadow-neo-lg">
@@ -41,7 +56,7 @@ const Navbar = () => {
           <div className="hidden md:flex md:items-center md:gap-4">
             <button
               onClick={() => navigate("/events")}
-              className={buttonStyles}
+              className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
             >
               Events
             </button>
@@ -50,19 +65,19 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => navigate("/my-events")}
-                  className={buttonStyles}
+                  className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
                 >
                   My Events
                 </button>
                 <button
                   onClick={() => navigate("/my-tickets")}
-                  className={buttonStyles}
+                  className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
                 >
                   Tickets
                 </button>
                 <button
                   onClick={() => navigate("/marketplace")}
-                  className={buttonStyles}
+                  className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
                 >
                   Market
                 </button>
@@ -77,24 +92,12 @@ const Navbar = () => {
                 Disconnect
               </button>
             ) : (
-              <div className="relative">
-                <button
-                  onClick={toggleDropdown}
-                  className="px-6 py-3 text-base font-neo text-neo-black bg-neo-secondary border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
-                >
-                  Connect
-                </button>
-                {dropdownVisible && (
-                  <div className="absolute right-0 mt-2 w-48 bg-neo-white border-neo border-neo-black rounded-lg shadow-neo-lg overflow-hidden">
-                    <button
-                      onClick={connect}
-                      className="block w-full px-4 py-3 text-left font-neo text-neo-black hover:bg-neo-accent border-b border-neo-black last:border-b-0"
-                    >
-                      Connect
-                    </button>
-                  </div>
-                )}
-              </div>
+              <button
+                onClick={handleConnect}
+                className="px-6 py-3 text-base font-neo text-neo-black bg-neo-secondary border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
+              >
+                Connect
+              </button>
             )}
           </div>
 
@@ -114,7 +117,7 @@ const Navbar = () => {
           <div className="p-4 space-y-3">
             <button
               onClick={() => navigate("/events")}
-              className={mobileButtonStyles}
+              className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
             >
               Events
             </button>
@@ -123,19 +126,19 @@ const Navbar = () => {
               <>
                 <button
                   onClick={() => navigate("/my-events")}
-                  className={mobileButtonStyles}
+                  className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
                 >
                   My Events
                 </button>
                 <button
                   onClick={() => navigate("/my-tickets")}
-                  className={mobileButtonStyles}
+                  className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
                 >
                   My Tickets
                 </button>
                 <button
                   onClick={() => navigate("/marketplace")}
-                  className={mobileButtonStyles}
+                  className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
                 >
                   Marketplace
                 </button>
@@ -145,19 +148,17 @@ const Navbar = () => {
             {isConnected ? (
               <button
                 onClick={handleDisconnect}
-                className={`${mobileButtonStyles} bg-neo-secondary`}
+                className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-secondary border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
               >
                 Disconnect
               </button>
             ) : (
-              <div className="space-y-3">
-                <button
-                  onClick={connect}
-                  className={`${mobileButtonStyles} bg-neo-secondary`}
-                >
-                  Connect
-                </button>
-              </div>
+              <button
+                onClick={handleConnect}
+                className="w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-secondary border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase"
+              >
+                Connect
+              </button>
             )}
           </div>
         </div>

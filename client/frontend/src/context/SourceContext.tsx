@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { useWallet } from "@coinbase/onchainkit";
+// import { useWallet } from "@coinbase/onchainkit";
 
 type SourceContextType = {
   wallet: any;
@@ -10,12 +10,16 @@ type SourceContextType = {
 const SourceContext = createContext<SourceContextType | undefined>(undefined);
 
 export const SourceProvider = ({ children }: { children: ReactNode }) => {
-  const { wallet, connect, disconnect } = useWallet();
+  // const { wallet, connect, disconnect } = useWallet();
 
   return (
-    <SourceContext.Provider value={{ wallet, connect, disconnect }}>
-      {children}
-    </SourceContext.Provider>
+    <>
+      //{" "}
+      <SourceContext.Provider value={{ wallet, connect, disconnect }}>
+        {children}
+        //{" "}
+      </SourceContext.Provider>
+    </>
   );
 };
 
