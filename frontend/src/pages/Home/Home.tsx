@@ -29,7 +29,7 @@ const Home = () => {
         <h2 className="text-5xl font-heading text-text dark:text-darkText mb-4 mx-6">
           Events
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-2 py-8">
           {events.map((event, index) => (
             <EventCard
               key={event.id}
