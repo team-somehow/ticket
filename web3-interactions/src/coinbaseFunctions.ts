@@ -122,3 +122,15 @@ export const distributeTickets = async (eventId: string) => {
     awardedUsers: topParticipants.map((doc) => doc.data()),
   };
 };
+
+// {
+//   "source": "functions",
+//   "codebase": "functions",
+//   "ignore": [
+//     "venv",
+//     ".git",
+//     "firebase-debug.log",
+//     "firebase-debug.*.log",
+//     "*.local"
+//   ]
+// }

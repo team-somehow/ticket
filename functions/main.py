@@ -7,17 +7,22 @@ from spotify.utils import get_spotify_data, calculate_fan_score_algorithm
 from storage.akave import api_request
 import json
 from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import credentials
+from spotify.secret import secrets  # Import the secrets dictionary
 
 load_dotenv()
 
 db = firestore.Client()
 
-AGGREGATOR_URL = os.getenv("WALRUS_AGGREGATOR_URL")  
-PUBLISHER_URL = os.getenv("WALRUS_PUBLISHER_URL") 
+cred = credentials.Certificate(secrets["GOOGLE_APPLICATION_CREDENTIALS"])
+firebase_admin.initialize_app(cred)
 
-FIREBASE_FUNCTIONS_BASE_URL = os.getenv("FIREBASE_FUNCTIONS_BASE_URL")
-FRONTEND = os.getenv("FRONTEND")
-API_BASE_URL=os.getenv("AKAVE_BASE_URL")
+AGGREGATOR_URL = secrets["WALRUS_AGGREGATOR_URL"]
+PUBLISHER_URL = secrets["WALRUS_PUBLISHER_URL"]
+FIREBASE_FUNCTIONS_BASE_URL = secrets["FIREBASE_FUNCTIONS_BASE_URL"]
+FRONTEND = secrets["FRONTEND"]
+API_BASE_URL = secrets["AKAVE_BASE_URL"]
 
 
 @https_fn.on_request()
