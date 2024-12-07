@@ -2,17 +2,11 @@ import { useQuery, gql } from "@apollo/client";
 import EventCard from "../../components/EventCard/EventCard";
 import useEvents from "../../hooks/get/events/useEvents";
 
+import { stakesReceivedsQuery } from "../../queries";
+
 const Home = () => {
   const { events, loading, error } = useEvents();
-  const { data } = useQuery(gql`
-    query getStakedList {
-      stakeReceiveds {
-        id
-        user
-        amount
-      }
-    }
-  `);
+  const { data } = useQuery(stakesReceivedsQuery);
 
   console.log(data);
 
