@@ -25,10 +25,10 @@ const EventCard = ({
   const { pathname } = useLocation();
 
   return (
-    <div className="relative h-[32rem] sm:h-[30rem] flex flex-col border-neo border-neo-black bg-neo-white rounded-lg p-4 shadow-neo hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
+    <div className="relative h-[28rem] sm:h-[26rem] flex flex-col border-neo border-neo-black bg-neo-white rounded-lg p-4 shadow-neo hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
       {/* Event Image */}
       <div
-        className="h-48 sm:h-40 w-full mb-4 bg-cover bg-center rounded-lg border-neo border-neo-black overflow-hidden"
+        className="h-40 sm:h-36 w-full mb-4 bg-cover bg-center rounded-lg border-neo border-neo-black overflow-hidden"
         style={{ backgroundImage: `url(${image})` }}
       >
         {!image && (
@@ -41,7 +41,7 @@ const EventCard = ({
       {/* Content Container */}
       <div className="flex flex-col flex-grow">
         {/* Event Name */}
-        <h2 className="text-xl sm:text-2xl font-neo-display text-neo-black mb-2 uppercase tracking-tight">{name}</h2>
+        <h2 className="text-xl sm:text-2xl font-neo-display text-neo-black mb-2 uppercase tracking-tight line-clamp-1">{name}</h2>
 
         {/* Location */}
         <p className="text-sm font-neo text-neo-black mb-2 uppercase">
@@ -49,7 +49,11 @@ const EventCard = ({
         </p>
 
         {/* Description */}
-        <p className="text-neo-black/70 font-neo mb-4 line-clamp-3">{description}</p>
+        <p className="text-neo-black/70 font-neo mb-4">
+          {description.length > 120 
+            ? `${description.substring(0, 120)}...` 
+            : description}
+        </p>
 
         {/* Price and Button - Now pushed to bottom */}
         <div className="mt-auto">
