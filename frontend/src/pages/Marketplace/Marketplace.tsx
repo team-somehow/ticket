@@ -24,6 +24,9 @@ const Marketplace = () => {
     const result = await buyTicket({
       ticketId: ticket.docId,
       buyerAddress: address,
+      salePrice: "10000000000",
+      tokenId: "0",
+      sellerAddress: ticket.userWalletAddress,
     });
 
     if (result.success) {
@@ -75,7 +78,8 @@ const Marketplace = () => {
               {weiToEther(ticket.eventDetails.ticketPrice)} ETH
             </p>
             <p className="text-sm font-base text-text-secondary mb-4">
-              <strong>Owner:</strong> {ticket.userWalletAddress}
+              <strong>Owner:</strong>{" "}
+              {`${ticket.userWalletAddress.substring(0, 6)}...${ticket.userWalletAddress.substring(ticket.userWalletAddress.length - 4)}`}
             </p>
             <button
               className="px-4 py-2 text-sm font-base text-text bg-main border-2 border-border rounded-base shadow-light hover:bg-mainAccent hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"

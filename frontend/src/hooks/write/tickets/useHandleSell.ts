@@ -19,11 +19,11 @@ const useHandleSell = () => {
 
       console.log("Signature:", signature);
 
-      if (isSuccess) {
+      setTimeout(async () => {
         const userEventRef = doc(db, "user_applied_events", userEventDocId);
         await updateDoc(userEventRef, { is_listed: true });
         window.location.reload();
-      }
+      }, 2000);
     } catch (err) {
       console.error("Error signing message:", err);
       setError("Failed to list ticket. Please try again later.");
