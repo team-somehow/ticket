@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useWriteContract } from "wagmi";
 import { cn } from "../../lib/utils";
 import useUserAccount from "../../hooks/account/useUserAccount";
 import ConnectToSpotify from "../../components/ConnectToSpotify/ConnectToSpotify";
 import useCustomReadContract from "../../hooks/useCustomReadContract";
-import useEventDetails from "../../hooks/get/events/useEventDetails";
+import useUserEventDetails from "../../hooks/get/events/useUserEventDetails";
 import useUserStatus from "../../hooks/get/events/useUserStatus";
 import useApplyForEvent from "../../hooks/write/events/useApplyForEvent";
 import { useQuery } from "@apollo/client";
 import { stakesReceivedsQuery } from "../../queries";
-import TicketProtocolImplementation from "../../artifacts/TicketProtocol.json";
 
 type Props = {};
 
@@ -23,16 +21,17 @@ const EventDetails = (props: Props) => {
   const { data } = useQuery(stakesReceivedsQuery);
   console.log(data);
 
-  const { eventDetails, loadingEventDetails, eventError } =
-    useEventDetails(eventId);
+  const {
+    eventDetails,
+    loading: loadingEventDetails,
+    error: eventError,
+  } = useUserEventDetails(eventId, address);
   const { userStatus } = useUserStatus(eventId, address);
   const {
     applyForEvent,
     loading: applying,
     error: applyError,
   } = useApplyForEvent();
-
-  const { writeContract } = useWriteContract();
 
   const { data: isStaked, isLoading } = useCustomReadContract(
     eventDetails?.contractAddress as `0x${string}`,
@@ -65,19 +64,13 @@ const EventDetails = (props: Props) => {
       return;
     console.log("Staking started...");
 
-    writeContract({
-      abi: TicketProtocolImplementation.abi,
-      functionName: "stakeAndApply",
-      address: eventDetails.contractAddress as `0x${string}`,
-      account: address,
-      value: stakeAmount as bigint,
-    });
-
     const result = await applyForEvent(
       eventId!,
       spotifyUserId,
       address!,
-      eventDetails.artist
+      eventDetails.artist,
+      eventDetails.stakeAmount,
+      eventDetails.contractAddress
     );
     if (result.success) {
       console.log(result);

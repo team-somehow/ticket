@@ -1,23 +1,41 @@
-
 import { useState } from "react";
+
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../../lib/firebase.config";
+
 import axios from "axios";
-import { firebaseFunctionBaseUrl } from "../../../constants/constants";
+
+import { useWriteContract } from "wagmi";
+
+import TicketProtocolImplementation from "../../../artifacts/TicketProtocol.json";
+import {
+  contractAddress,
+  firebaseFunctionBaseUrl,
+} from "../../../constants/constants";
+import { db } from "../../../lib/firebase.config";
 
 const useApplyForEvent = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { writeContract } = useWriteContract();
 
   const applyForEvent = async (
     eventId: string,
     spotifyUserId: string,
     address: string,
-    artist: string
+    artist: string,
+    stakeAmount: string,
+    contractAddress: string
   ) => {
     setLoading(true);
     setError(null);
     try {
+      writeContract({
+        abi: TicketProtocolImplementation.abi,
+        functionName: "stakeAndApply",
+        address: contractAddress as `0x${string}`,
+        account: address as `0x${string}`,
+        value: stakeAmount as unknown as bigint,
+      });
       // Fetch score and artist name
       const response = await axios.get(
         `${firebaseFunctionBaseUrl}/calculate_fan_score?user_id=${spotifyUserId}&artist_name=${artist}`
