@@ -13,17 +13,17 @@ const useHandleSell = () => {
 
   const handleSell = async (userEventDocId: string) => {
     try {
-      const message = `I want to sell my ticket with ID: ${userEventDocId}`;
+      // const message = `I want to sell my ticket with ID: ${userEventDocId}`;
 
-      const signature = signMessage({ message: message });
+      // const signature = signMessage({ message: message });
 
-      console.log("Signature:", signature);
+      // console.log("Signature:", signature);
 
-      setTimeout(async () => {
-        const userEventRef = doc(db, "user_applied_events", userEventDocId);
-        await updateDoc(userEventRef, { is_listed: true });
-        window.location.reload();
-      }, 2000);
+      // setTimeout(async () => {
+      const userEventRef = doc(db, "user_applied_events", userEventDocId);
+      await updateDoc(userEventRef, { is_listed: true });
+      window.location.reload();
+      // }, 2000);
     } catch (err) {
       console.error("Error signing message:", err);
       setError("Failed to list ticket. Please try again later.");

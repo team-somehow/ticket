@@ -31,7 +31,6 @@ const Marketplace = () => {
     });
 
     if (result.success) {
-      alert("Ticket purchased successfully!");
       // Refresh the page or update the UI as needed
       window.location.reload();
     }
@@ -91,6 +90,11 @@ const Marketplace = () => {
             </button>
           </div>
         ))}
+        {tickets.length === 0 && (
+          <div className="flex items-center justify-center h-full text-neo-black/60 font-neo uppercase">
+            No tickets listed
+          </div>
+        )}
       </div>
     </div>
   );
