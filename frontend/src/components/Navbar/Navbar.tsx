@@ -36,8 +36,10 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  const buttonStyles = "w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider";
-  const mobileButtonStyles = "w-full px-4 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider";
+  const buttonStyles =
+    "w-full px-6 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider";
+  const mobileButtonStyles =
+    "w-full px-4 py-3 text-base font-neo text-neo-black bg-neo-white border-neo border-neo-black rounded-lg shadow-neo hover:bg-neo-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-none transition-all uppercase tracking-wider";
 
   return (
     <nav className="sticky top-0 z-50 bg-neo-white border-b-neo border-neo-black shadow-neo-lg">
@@ -114,6 +116,14 @@ const Navbar = () => {
                     ))}
                   </div>
                 )}
+                {/* <div className="absolute right-0 mt-2 w-48 bg-neo-white border-neo border-neo-black rounded-lg shadow-neo-lg overflow-hidden">
+                  <button
+                    className="block w-full px-4 py-3 text-left font-neo text-neo-black hover:bg-neo-accent border-b border-neo-black last:border-b-0"
+                    onClick={connectWallet}
+                  >
+                    Connect Wallet
+                  </button>
+                </div> */}
               </div>
             )}
           </div>

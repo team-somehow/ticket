@@ -1,6 +1,9 @@
 import { useState } from "react";
+
 import { doc, updateDoc } from "firebase/firestore";
+
 import { useWriteContract } from "wagmi";
+
 import TicketProtocolImplementation from "../../../artifacts/TicketProtocol.json";
 import { db } from "../../../lib/firebase.config";
 
@@ -10,6 +13,7 @@ interface BuyTicketParams {
   sellerAddress: string;
   tokenId: string;
   salePrice: string;
+  contractAddress: string;
 }
 
 const useBuyTicket = () => {
@@ -23,16 +27,24 @@ const useBuyTicket = () => {
     sellerAddress,
     tokenId,
     salePrice,
+    contractAddress,
   }: BuyTicketParams) => {
     setLoading(true);
     setError(null);
 
     try {
-      const txResponse = await writeContract({
+      // writeContract({
+      //   abi: TicketProtocolImplementation.abi,
+      //   functionName: "safeTransferWhileEnforcingPrice",
+      //   address: sellerAddress as `0x${string}`,
+      //   args: [sellerAddress, buyerAddress, tokenId, salePrice],
+      //   value: salePrice as unknown as bigint,
+      // });
+      writeContract({
         abi: TicketProtocolImplementation.abi,
-        functionName: "safeTransferWhileEnforcingPrice",
-        address: sellerAddress as `0x${string}`,
-        args: [sellerAddress, buyerAddress, tokenId, salePrice],
+        functionName: "stakeAndApply",
+        address: contractAddress as `0x${string}`,
+        account: buyerAddress,
         value: salePrice as unknown as bigint,
       });
 

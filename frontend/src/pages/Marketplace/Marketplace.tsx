@@ -27,6 +27,7 @@ const Marketplace = () => {
       salePrice: "10000000000",
       tokenId: "0",
       sellerAddress: ticket.userWalletAddress,
+      contractAddress: ticket.eventDetails.contractAddress,
     });
 
     if (result.success) {

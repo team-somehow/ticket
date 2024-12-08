@@ -88,7 +88,11 @@ setGlobalOptions({
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 const CONTRACT_ADDRESS = "0x40a124a1079251Ee683A6B301Bf3688416DaAA5A";
-const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+// const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+const provider = new ethers.JsonRpcProvider("https://sepolia.base.org");
+// const provider = new ethers.JsonRpcProvider(
+// "bsc-testnet-dataseed.bnbchain.org"
+// );
 
 export const setUserScores = onRequest(async (request, response) => {
   const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
