@@ -76,3 +76,4 @@ venv/
 __pycache__/
 
 secret.py
+.env

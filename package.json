@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@truenetworkio/sdk": "^0.0.14"
+  },
+  "scripts": {
+    "asbuild:debug": "asc acm/assembly/index.ts --target debug",
+    "asbuild:release": "asc acm/assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release"
+  }
+}
