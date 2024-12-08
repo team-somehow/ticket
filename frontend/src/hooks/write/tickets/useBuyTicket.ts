@@ -48,13 +48,13 @@ const useBuyTicket = () => {
         value: salePrice as unknown as bigint,
       });
 
-      const ticketRef = doc(db, "user_applied_events", ticketId);
-      await updateDoc(ticketRef, {
-        userWalletAddress: buyerAddress,
-        is_listed: false,
-      });
+      setTimeout(async () => {
+        const ticketRef = doc(db, "tickets", ticketId);
+        await updateDoc(ticketRef, { isListed: false });
+        window.location.reload();
 
-      return { success: true };
+        return { success: true };
+      }, 2000);
     } catch (err) {
       console.error("Error purchasing ticket:", err);
       setError("Failed to purchase the ticket. Please try again.");
