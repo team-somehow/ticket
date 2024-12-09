@@ -1,5 +1,8 @@
-import { fanScoreSchema } from "./schema";
+import { fanScoreSchema } from "./true-network/schema";
 import { getTrueNetworkInstance } from "./true-network/true.config";
+import express from "express";
+import { Request, Response } from "express";
+import cors from "cors";
 
 type FactorScores = {
   topArtistRank: number;
@@ -19,37 +22,38 @@ const factorScores: FactorScores = {
   similarGenres: 0.15,
 };
 
-const calc = async () => {
+const calc = async (
+  ethereumUserWallet: string,
+  userFactorScores: FactorScores = factorScores
+) => {
   const api = await getTrueNetworkInstance();
   console.log("API Instance:", api);
-
-  const ethereumUserWallet = "0x13ac115f3e36D51Fc52Cb63AB5E2bB0930729159";
-  console.log("Factor Scores:", factorScores);
+  console.log("Factor Scores:", userFactorScores);
 
   const output = await fanScoreSchema.attest(
     api,
     ethereumUserWallet,
-    factorScores
+    userFactorScores
   );
 
   console.log("Attestation Output:", output);
 
-  const totalWeight = Object.values(factorScores).reduce(
+  const totalWeight = Object.values(userFactorScores).reduce(
     (acc, score) => acc + score,
     0
   );
 
   const normalizedWeights = Object.fromEntries(
-    Object.entries(factorScores).map(([key, value]) => [
+    Object.entries(userFactorScores).map(([key, value]) => [
       key,
       value / totalWeight,
     ])
   );
 
-  const fanScore = Object.keys(factorScores).reduce((acc, factor) => {
+  const fanScore = Object.keys(userFactorScores).reduce((acc, factor) => {
     return (
       acc +
-      factorScores[factor as keyof FactorScores] *
+      userFactorScores[factor as keyof FactorScores] *
         (normalizedWeights[factor] as number)
     );
   }, 0);
@@ -64,5 +68,56 @@ const calc = async () => {
 
   return fanScorePercentage;
 };
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+app.post("/calculate-fan-score", async (req: Request, res: Response) => {
+  try {
+    const { ethereumUserWallet, factorScores: userFactorScores } = req.body;
+
+    // Validate required parameters
+    if (!ethereumUserWallet) {
+      return res.status(400).json({ error: "ethereumUserWallet is required" });
+    }
+
+    // Validate factor scores if provided
+    if (userFactorScores) {
+      const requiredFactors = [
+        "topArtistRank",
+        "topTracks",
+        "followsArtist",
+        "songsInPlaylist",
+        "overlappingTracks",
+        "similarGenres",
+      ];
+
+      const missingFactors = requiredFactors.filter(
+        (factor) => !(factor in userFactorScores)
+      );
+      if (missingFactors.length > 0) {
+        return res.status(400).json({
+          error: "Invalid factorScores object",
+          missingFactors,
+        });
+      }
+    }
+
+    const result = await calc(ethereumUserWallet, userFactorScores);
+    res.json({ fanScorePercentage: result });
+  } catch (error) {
+    console.error("Error calculating fan score:", error);
+    res.status(500).json({
+      error: "Failed to calculate fan score",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 export default calc;
